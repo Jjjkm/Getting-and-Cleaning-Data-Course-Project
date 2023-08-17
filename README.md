@@ -2,9 +2,9 @@
 ## 1 bind the rows of subjects and activities in train and test data
 
 ## 2 Merges the training and the test sets to create one data set: dat
-  ##2.1 finding out the index in features calculating the mean and std values 
-  ##2.2 assigning the index to dat columns
-  ##2.3 joining the columns according to the measurement targets
+  ##2.1 finding out the index in features calculating the mean and std values /
+  ##2.2 assigning the index to dat columns/
+  ##2.3 joining the columns according to the measurement targets/
   ##2.4 rename the columns of 33 the features (mean and std*66)
   
 ## 3 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
