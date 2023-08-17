@@ -20,6 +20,7 @@
 
 ## Code book
 num of subject=30
+
     activity_labels: 
 1            1 WALKING
 2   2 WALKING_UPSTAIRS
@@ -29,6 +30,7 @@ num of subject=30
 6             6 LAYING
 
 num of features= 66  
+
 generated data total colums = 66*2 (mean and std for each feature)
 example of the col names' arrangement (first 2 features):
 mean_tBodyAcc-X	mean_tBodyAcc-Y	mean_tBodyAcc-Z	std_tBodyAcc-X	std_tBodyAcc-Y	std_tBodyAcc-Z 
