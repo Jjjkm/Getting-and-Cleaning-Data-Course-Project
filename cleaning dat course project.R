@@ -4,11 +4,15 @@ features<- read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\featur
 
 activity_labels<- read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\activity_labels.txt",fill=T,sep='\t')
 
-subject_train<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\subject_test.txt")
-activity_train<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\y_test.txt")
+subject_train<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\train\\subject_train.txt")
+activity_train<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\train\\y_train.txt")
 
 subject_test<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\subject_test.txt")
 activity_test<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\y_test.txt")
+
+##bind the rows of subjects and activities in train and test dat
+subject<-rbind(subject_train,subject_test,colnames("subject"))
+activity<-rbind(activity_train,activity_test,colnames('activity'))
 
 
 ##loading train dat
@@ -113,6 +117,39 @@ setnames(dat_join,old=c(names(dat_join)),
 ##From the data set in step 4, creates a second, 
 ##independent tidy data set with the average of each variable for
 ##each activity and each subject.----------------
-result<-sapply(dat_join,function(x) mean(x))
-result<-as.data.frame(result)
-result
+
+##cbind the subject, activity and the mean and std selected for 33 features
+result<-cbind(subject,activity,dat_join)
+colnames(result)[1]='subject'
+colnames(result)[2]='activity'
+
+##rename all elements in activity column to the actual activity name
+result$activity[result$activity=='1']<-'Walking'
+result$activity[result$activity=='2']<-'Walking_Upstairs'
+result$activity[result$activity=='3']<-'Walking_Downstairs'
+result$activity[result$activity=='4']<-'Sitting'
+result$activity[result$activity=='5']<-'Standing'
+result$activity[result$activity=='6']<-'Laying'
+
+##split result by subjects
+library(dplyr)
+result<-split(result,result$subject)
+
+##further split by activity
+result<-lapply(result,function(x) split(x,x[,2]))
+
+
+##dropping the 1 and 2 columns for all results splitted by subjects n activities
+result<-lapply(result,function(x)lapply(x,function(x)x%>%select(3:68)))
+
+##setting the average of each variable for each activity and each subject.
+##Three levels: result>splitted by subjects>splitted by activities>
+##average for 66 fearures
+##result[[1]][[1]]<-lapply(result[[1]][[1]],function(x)mean(x))
+##result[[1]]<-lapply(result[[1]],function(x)lapply(x,function(x)mean(x)))
+result<-lapply(result,function(x)lapply(x,function(x)lapply(x,function(x)mean(x))))
+
+##convert all to a dataframe
+result<-lapply(result,function(x)lapply(x,function(x) as.data.frame(x)))
+
+
