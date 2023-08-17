@@ -55,7 +55,7 @@ dat_join<-cbind(mean_columns[,c(1,2,3)],std_columns[,c(1,2,3)],##tBodyAcc-XYZ
                 mean_columns[,31],std_columns[,31],##fBodyAccJerkMag
                 mean_columns[,32],std_columns[,32],##fBodyGyroMag
                 mean_columns[,33],std_columns[,33]##fBodyGyroJerkMag
-                )
+)
 ##----------Uses descriptive activity names to name the activities in the data set---------
 
 ##rename the columns of 33 the features (mean and std*66)
@@ -112,7 +112,7 @@ setnames(dat_join,old=c(names(dat_join)),
                "mean_fBodyGyroJerkMag",
                "std_fBodyGyroJerkMag"
                
-               ))
+         ))
 
 ##From the data set in step 4, creates a second, 
 ##independent tidy data set with the average of each variable for
@@ -133,32 +133,6 @@ result$activity[result$activity=='6']<-'Laying'
 
 ##split result by subjects
 library(dplyr)
-result<-split(result,result$subject)
+result<-result%>%group_by(subject,activity)%>%summarise_all(list(mean))
 
-##further split by activity
-result<-lapply(result,function(x) split(x,x[,2]))
-
-
-##dropping the 1 and 2 columns for all results splitted by subjects n activities
-result<-lapply(result,function(x)lapply(x,function(x)x%>%select(3:68)))
-
-##setting the average of each variable for each activity and each subject.
-##Three levels: result>splitted by subjects>splitted by activities>
-##average for 66 fearures
-##result[[1]][[1]]<-lapply(result[[1]][[1]],function(x)mean(x))
-##result[[1]]<-lapply(result[[1]],function(x)lapply(x,function(x)mean(x)))
-result<-lapply(result,function(x)lapply(x,function(x)lapply(x,function(x)mean(x))))
-
-##convert the 3rd level(66 features' mean for every activity, every subject) to a dataframe
-result<-lapply(result,function(x)lapply(x,function(x) as.data.frame(x)))
-
-
-##the whole result contains the 30 subject
-print(summary(result))
-
-
-##the 1st subject's records of 6 activities
-print(summary(result[[1]]))
-
-##the 66 features' means for the the 1st subject's records of laying
-print(str(result[[1]]$Laying))
+openxlsx::write.xlsx(result,"D:\\r git projects\\cleaningdata\\cleaning dat project.xlsx")
