@@ -1,10 +1,14 @@
 readme<- read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\README.txt",fill=T,sep='\t')
-
 features_info<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\features_info.txt",fill=T,sep="\t")
-
 features<- read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\features.txt",fill=T,sep='\t')
 
 activity_labels<- read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\activity_labels.txt",fill=T,sep='\t')
+
+subject_train<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\subject_test.txt")
+activity_train<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\y_test.txt")
+
+subject_test<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\subject_test.txt")
+activity_test<-read.table("D:\\r git projects\\cleaningdata\\UCI HAR Dataset\\test\\y_test.txt")
 
 
 ##loading train dat
@@ -106,3 +110,9 @@ setnames(dat_join,old=c(names(dat_join)),
                
                ))
 
+##From the data set in step 4, creates a second, 
+##independent tidy data set with the average of each variable for
+##each activity and each subject.----------------
+result<-sapply(dat_join,function(x) mean(x))
+result<-as.data.frame(result)
+result
