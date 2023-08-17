@@ -11,7 +11,7 @@
   ##2.4 rename the columns of 33 the features (mean and std*66)
   
 ## 3 From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-  ##3.1 bind the columns of the subject, activity and the mean and std selected for the 33 features
+  ##3.1 bind the columns of the subject, activity and the mean and std selected for the 33 features cbind(subject,activity,dat)
   
   ##3.2 rename all elements in activity column to the actual activity name
   
