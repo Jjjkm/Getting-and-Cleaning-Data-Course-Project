@@ -149,7 +149,16 @@ result<-lapply(result,function(x)lapply(x,function(x)x%>%select(3:68)))
 ##result[[1]]<-lapply(result[[1]],function(x)lapply(x,function(x)mean(x)))
 result<-lapply(result,function(x)lapply(x,function(x)lapply(x,function(x)mean(x))))
 
-##convert all to a dataframe
+##convert the 3rd level(66 features' mean for every activity, every subject) to a dataframe
 result<-lapply(result,function(x)lapply(x,function(x) as.data.frame(x)))
 
 
+##the whole result contains the 30 subject
+print(summary(result))
+
+
+##the 1st subject's records of 6 activities
+print(summary(result[[1]]))
+
+##the 66 features' means for the the 1st subject's records of laying
+print(str(result[[1]]$Laying))
